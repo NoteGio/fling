@@ -1,0 +1,1891 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Documentation | anime.js</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:title" content="anime.js">
+  <meta property="og:url" content="http://animejs.com">
+  <meta property="og:description" content="Javascript Animation Engine">
+  <meta property="og:image" content="http://animejs.com/documentation/assets/img/icons/og.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="anime.js">
+  <meta name="twitter:site" content="@juliangarnier">
+  <meta name="twitter:description" content="Javascript Animation Engine">
+  <meta name="twitter:image" content="http://animejs.com/documentation/assets/img/icons/twitter.png">
+  <link rel="apple-touch-icon-precomposed" href="assets/img/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="assets/img/icons/favicon.png" >
+  <link href="https://fonts.googleapis.com/css?family=Space+Mono" rel="stylesheet">
+  <link href="assets/css/anime.css" rel="stylesheet">
+  <link href="assets/css/anime-theme.css" rel="stylesheet">
+  <link href="assets/css/documentation.css" rel="stylesheet">
+  <script src="../anime.min.js"></script>
+</head>
+<body>
+  <div class="content">
+    <header class="header">
+      <a class="logo" href="https://github.com/juliangarnier/anime/"><h1>anime.js</h1></a>
+    </header>
+    <section class="pane sidebar">
+      <nav class="navigation"></nav>
+    </section>
+    <section class="pane demos">
+
+<!-- TARGETS -->
+<article id="targets" class="color-01">
+  <header>
+    <h2 class="demos-title">Targets</h2>
+  </header>
+
+<div id="cssSelector" class="demo">
+  <h3 class="demo-title">CSS Selector</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+  </div>
+<script>var cssSelector = anime({
+  targets: '#cssSelector .el',
+  translateX: 250
+});
+</script>
+</div>
+
+<div id="domNode" class="demo">
+  <h3 class="demo-title">DOM Node</h3>
+  <div class="demo-content">
+    <div class="large square shadow"></div>
+    <div class="large square el"></div>
+  </div>
+<script>var el = document.querySelector('#domNode .el');
+
+var domNode = anime({
+  targets: el,
+  translateX: 250
+});
+</script>
+</div>
+
+<div id="nodeList" class="demo">
+  <h3 class="demo-title">Node List</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+  </div>
+<script>var els = document.querySelectorAll('#nodeList .el');
+
+var nodeList = anime({
+  targets: els,
+  translateX: 250
+});
+</script>
+</div>
+
+<div id="JSobject" class="demo">
+  <h3 class="demo-title">JavaScript Object</h3>
+  <div class="demo-content">
+    <pre>{"charged":"0"}</pre>
+  </div>
+<script>var obj = { charged: '0%' };
+
+var JSobject = anime({
+  targets: obj,
+  charged: '100%',
+  round: 1,
+  easing: 'linear',
+  update: function() {
+    var el = document.querySelector('#JSobject pre');
+    el.innerHTML = JSON.stringify(obj);
+  }
+});
+</script>
+</div>
+
+<div id="JSarray" class="demo">
+  <h3 class="demo-title">JavaScript Array</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el-01"></div>
+    </div>
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el-02"></div>
+    </div>
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el-03"></div>
+    </div>
+  </div>
+<script>var el = document.querySelector('#JSarray .el-01');
+
+var JSarray = anime({
+  targets: [el, '#JSarray .el-02', '#JSarray .el-03'],
+  translateX: 250
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- ANIMATABLE PROPERTIES -->
+<article id="properties" class="color-02">
+<header>
+  <h2 class="demos-title">Properties</h2>
+</header>
+
+<div id="cssProperties" class="demo">
+  <h3 class="demo-title">CSS</h3>
+  <div class="demo-content">
+    <div class="large square shadow"></div>
+    <div class="large square el"></div>
+  </div>
+<script>var cssProperties = anime({
+  targets: '#cssProperties .el',
+  opacity: .5,
+  left: '240px',
+  backgroundColor: '#FFF',
+  borderRadius: ['0em', '2em'],
+  easing: 'easeInOutQuad'
+});
+</script>
+</div>
+
+<div id="CSStransforms" class="demo">
+  <h3 class="demo-title">CSS Transforms</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var CSStransforms = anime({
+  targets: '#CSStransforms .el',
+  translateX: 250,
+  scale: 2,
+  rotate: '1turn'
+});
+</script>
+</div>
+
+<div id="JSobjectProp" class="demo">
+  <h3 class="demo-title">Object properties</h3>
+<div class="demo-content"><pre>{"myProperty":"0"}</pre></div>
+<script>var myObject = {
+  prop1: 0,
+  prop2: '0%'
+}
+var JSobjectProp = anime({
+  targets: myObject,
+  prop1: 50,
+  prop2: '100%',
+  easing: 'linear',
+  round: 1,
+  update: function() {
+    var el = document.querySelector('#JSobjectProp pre');
+    el.innerHTML = JSON.stringify(myObject);
+  }
+});
+</script>
+</div>
+
+<div id="domAttributes" class="demo">
+  <h3 class="demo-title">DOM Attributes</h3>
+  <div class="demo-content">
+    <input class="text-output" value="0"></input>
+  </div>
+<script>var domAttributes = anime({
+  targets: '#domAttributes input',
+  value: 1000,
+  round: 1,
+  easing: 'easeInOutExpo'
+});
+</script>
+</div>
+
+<div id="svgAttributes" class="demo">
+  <h3 class="demo-title">SVG Attributes</h3>
+  <div class="demo-content align-center">
+<svg width="128" height="128" viewBox="0 0 128 128">
+  <polygon points="64 68.64 8.574 100 63.446 67.68 64 4 64.554 67.68 119.426 100" fill="currentColor"/>
+</svg>
+  </div>
+<script>var svgAttributes = anime({
+  targets: '#svgAttributes polygon',
+  points: '64 128 8.574 96 8.574 32 64 0 119.426 32 119.426 96',
+  easing: 'easeInOutExpo'
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- PROPERTY PARAMETERS -->
+<article id="propertyParameters" class="color-03">
+  <header>
+    <h2 class="demos-title">Property parameters</h2>
+  </header>
+
+<div id="duration" class="demo">
+  <h3 class="demo-title">Duration</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var duration = anime({
+  targets: '#duration .el',
+  translateX: 250,
+  duration: 3000
+});
+</script>
+</div>
+
+<div id="delay" class="demo">
+  <h3 class="demo-title">Delay</h3>
+  <div class="demo-content">
+<div class="square shadow"></div>
+<div class="square el"></div>
+  </div>
+<script>var delay = anime({
+  targets: '#delay .el',
+  translateX: 250,
+  delay: 1000
+});
+</script>
+</div>
+
+<div id="easing" class="demo">
+  <h3 class="demo-title">Easing</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var easing = anime({
+  targets: '#easing .el',
+  translateX: 250,
+  easing: 'easeInOutQuart'
+});
+</script>
+</div>
+
+<div id="specificPropertyParameters" class="demo">
+  <h3 class="demo-title">Specific property parameters</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var specificPropertyParameters = anime({
+  targets: '#specificPropertyParameters .el',
+  translateX: {
+    value: 250,
+    duration: 800
+  },
+  rotate: {
+    value: 360,
+    duration: 1800,
+    easing: 'easeInOutSine'
+  },
+  scale: {
+    value: 2,
+    duration: 1600,
+    delay: 800,
+    easing: 'easeInOutQuart'
+  },
+  delay: 250 // All properties except 'scale' inherit 250ms delay
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- FUNCTION BASED PARAMETERS -->
+<article id="functionBasedParameters" class="color-04">
+<header>
+  <h2 class="demos-title">Function based parameters</h2>
+</header>
+
+<div id="functionBasedDuration" class="demo">
+  <h3 class="demo-title">Duration</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+  </div>
+<script>var functionBasedDuration = anime({
+  targets: '#functionBasedDuration .el',
+  translateX: 250,
+  direction: 'alternate',
+  loop: true,
+  duration: function(el, i, l) {
+    return 1000 + (i * 1000);
+  }
+});
+</script>
+</div>
+
+<div id="functionBasedDelay" class="demo">
+  <h3 class="demo-title">Delay</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+  </div>
+<script>var functionBasedDelay = anime({
+  targets: '#functionBasedDelay .el',
+  translateX: 250,
+  direction: 'alternate',
+  loop: true,
+  delay: function(el, i, l) {
+    return i * 100;
+  }
+});
+</script>
+</div>
+
+<div id="functionBasedElasticity" class="demo">
+  <h3 class="demo-title">Elasticity</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+  </div>
+<script>var functionBasedElasticity = anime({
+  targets: '#functionBasedElasticity .el',
+  translateX: 250,
+  direction: 'alternate',
+  loop: true,
+  elasticity: function(el, i, l) {
+    return (200 + i * 200);
+  }
+});
+</script>
+</div>
+
+<div id="combinedFunctionBasedProp" class="demo">
+  <h3 class="demo-title">Combined</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div data-duration="2000" class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="square shadow"></div>
+      <div data-duration="1500" class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="square shadow"></div>
+      <div data-duration="1000" class="square el"></div>
+    </div>
+  </div>
+<script>var combinedFunctionBasedProp = anime({
+  targets: '#combinedFunctionBasedProp .el',
+  translateX: 100,
+  translateX: 250,
+  rotate: 180,
+  duration: function(target) {
+    // Duration based on every div 'data-duration' attribute
+    return target.getAttribute('data-duration');
+  },
+  delay: function(target, index) {
+    // 100ms delay multiplied by every div index, in ascending order
+    return index * 100;
+  },
+  elasticity: function(target, index, totalTargets) {
+    // Elasticity multiplied by every div index, in descending order
+    return 200 + ((totalTargets - index) * 200);
+  },
+  direction: 'alternate',
+  loop: true
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- ANIMATION PARAMETERS -->
+<article id="animationParameters" class="color-05">
+  <header>
+    <h2 class="demos-title">Animation parameters</h2>
+  </header>
+
+<div id="alternate" class="demo">
+  <h3 class="demo-title">Direction alternate</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var alternate = anime({
+  targets: '#alternate .el',
+  translateX: 250,
+  direction: 'alternate'
+});
+</script>
+</div>
+
+<div id="reverse" class="demo">
+  <h3 class="demo-title">Direction reverse</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var reverse = anime({
+  targets: '#reverse .el',
+  translateX: 250,
+  direction: 'reverse'
+});
+</script>
+</div>
+
+<div id="loop" class="demo">
+  <h3 class="demo-title">Loop (x times)</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var loop = anime({
+  targets: '#loop .el',
+  translateX: 250,
+  loop: 3
+});
+</script>
+</div>
+
+<div id="loopAlternate" class="demo">
+  <h3 class="demo-title">Loop alternate (x times)</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var loopAlternate = anime({
+  targets: '#loopAlternate .el',
+  translateX: 250,
+  loop: 3,
+  direction: 'alternate'
+});
+</script>
+</div>
+
+<div id="loopReverse" class="demo">
+  <h3 class="demo-title">Loop reverse (x times)</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var loopReverse = anime({
+  targets: '#loopReverse .el',
+  translateX: 250,
+  loop: 3,
+  direction: 'reverse'
+});
+</script>
+</div>
+
+<div id="infiniteLoop" class="demo">
+  <h3 class="demo-title">Infinite loop</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var infiniteLoop = anime({
+  targets: '#infiniteLoop .el',
+  translateX: 250,
+  loop: true
+});
+</script>
+</div>
+
+<div id="infiniteLoopAlternate" class="demo">
+  <h3 class="demo-title">Infinite loop alternate</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var infiniteLoopAlternate = anime({
+  targets: '#infiniteLoopAlternate .el',
+  translateX: 250,
+  direction: 'alternate',
+  loop: true
+});
+</script>
+</div>
+
+<div id="infiniteLoopReverse" class="demo">
+  <h3 class="demo-title">Infinite loop reverse</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var infiniteLoopReverse = anime({
+  targets: '#infiniteLoopReverse .el',
+  translateX: 250,
+  direction: 'reverse',
+  loop: true
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- VALUES -->
+<article id="values" class="color-06">
+<header>
+  <h2 class="demos-title">Values</h2>
+</header>
+
+<div id="unitlessValue" class="demo">
+  <h3 class="demo-title">Unitless</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var unitlessValue = anime({
+  targets: '#unitlessValue .el',
+  translateX: 250,
+  rotate: 540
+});
+</script>
+</div>
+
+<div id="specificUnitValue" class="demo">
+  <h3 class="demo-title">Specific unit</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var specificUnitValue = anime({
+  targets: '#specificUnitValue .el',
+  translateX: '20em',
+  rotate: '1.5turn'
+});
+</script>
+</div>
+
+<div id="relativeValues" class="demo">
+  <h3 class="demo-title">Relative</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el" style="transform: translateX(100px)"></div>
+  </div>
+<script>var relativeValues = anime({
+  targets: '#relativeValues .el',
+  translateX: {
+    value: '+=150',
+    duration: 1000
+  },
+  width: {
+    value: '-=10',
+    duration: 1800,
+    easing: 'easeInOutSine'
+  },
+  height: {
+    value: '*=4',
+    duration: 1800,
+    easing: 'easeInOutSine'
+  },
+  direction: 'alternate'
+});
+</script>
+</div>
+
+<div id="colors" class="demo">
+  <h3 class="demo-title">Colors</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+  </div>
+<script>
+
+var colors = anime({
+  targets: '#colors .el',
+  translateX: 250,
+  backgroundColor: [
+    {value: '#FFF'}, // Or #FFFFFF
+    {value: 'rgb(255, 0, 0)'},
+    {value: 'hsl(100, 60%, 60%)'}
+  ],
+  easing: 'linear',
+  direction: 'alternate',
+  duration: 2000
+});
+</script>
+</div>
+
+<div id="specificInitialValue" class="demo">
+  <h3 class="demo-title">Specific initial value</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var specificInitialValue = anime({
+  targets: '#specificInitialValue .el',
+  translateX: [100, 250],
+  delay: 500,
+  direction: 'alternate',
+  loop: true
+});
+</script>
+</div>
+
+<div id="functionBasedPropVal" class="demo">
+  <h3 class="demo-title">Function based values</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div data-x="160" class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div data-x="80" class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div data-x="250" class="small square el"></div>
+    </div>
+  </div>
+<script>var functionBasedPropVal = anime({
+  targets: '#functionBasedPropVal .el',
+  translateX: function(el) {
+    return el.getAttribute('data-x');
+  },
+  translateY: function(el, i) {
+    return 50 + (-50 * i);
+  },
+  scale: function(el, i, l) {
+    return (l - i) + .25;
+  },
+  rotate: function() { return anime.random(-360, 360); },
+  duration: function() { return anime.random(1200, 1800); },
+  duration: function() { return anime.random(800, 1600); },
+  delay: function() { return anime.random(0, 1000); },
+  direction: 'alternate',
+  loop: true
+});
+</script>
+</div>
+
+<div id="keyframes" class="demo">
+  <h3 class="demo-title">Keyframes</h3>
+  <div class="demo-content">
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var keyframes = anime({
+  targets: '#keyframes .el',
+  translateX: [
+    { value: 250, duration: 1000, delay: 500, elasticity: 0 },
+    { value: 0, duration: 1000, delay: 500, elasticity: 0 }
+  ],
+  translateY: [
+    { value: -40, duration: 500, elasticity: 100 },
+    { value: 40, duration: 500, delay: 1000, elasticity: 100 },
+    { value: 0, duration: 500, delay: 1000, elasticity: 100 }
+  ],
+  scaleX: [
+    { value: 4, duration: 100, delay: 500, easing: 'easeOutExpo' },
+    { value: 1, duration: 900, elasticity: 300 },
+    { value: 4, duration: 100, delay: 500, easing: 'easeOutExpo' },
+    { value: 1, duration: 900, elasticity: 300 }
+  ],
+  scaleY: [
+    { value: [1.75, 1], duration: 500 },
+    { value: 2, duration: 50, delay: 1000, easing: 'easeOutExpo' },
+    { value: 1, duration: 450 },
+    { value: 1.75, duration: 50, delay: 1000, easing: 'easeOutExpo' },
+    { value: 1, duration: 450 }
+  ],
+  loop: true
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- TIMELINE -->
+<article id="timeline" class="color-07">
+<header>
+  <h2 class="demos-title">Timeline</h2>
+</header>
+
+<div id="basicTimeline" class="demo">
+  <h3 class="demo-title">Basic timeline</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+  </div>
+<script>var basicTimeline = anime.timeline();
+
+basicTimeline
+  .add({
+    targets: '#basicTimeline .square.el',
+    translateX: 250,
+    easing: 'easeOutExpo'
+  })
+  .add({
+    targets: '#basicTimeline .circle.el',
+    translateX: 250,
+    easing: 'easeOutExpo'
+  })
+  .add({
+    targets: '#basicTimeline .triangle.el',
+    translateX: 250,
+    easing: 'easeOutExpo'
+  });
+
+</script>
+</div>
+
+<div id="relativeOffset" class="demo">
+  <h3 class="demo-title">Relative offset</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+  </div>
+<script>var relativeOffset = anime.timeline();
+
+relativeOffset
+  .add({
+    targets: '#relativeOffset .square.el',
+    translateX: 250,
+    easing: 'easeOutExpo',
+  })
+  .add({
+    targets: '#relativeOffset .circle.el',
+    translateX: 250,
+    easing: 'easeOutExpo',
+    offset: '-=600' // Starts 600ms before the previous animation ends
+  })
+  .add({
+    targets: '#relativeOffset .triangle.el',
+    translateX: 250,
+    easing: 'easeOutExpo',
+    offset: '-=800' // Starts 800ms before the previous animation ends
+  });
+
+</script>
+</div>
+
+<div id="absoluteOffset" class="demo">
+  <h3 class="demo-title">Absolute offset</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+  </div>
+<script>var absoluteOffset = anime.timeline();
+
+absoluteOffset
+  .add({
+    targets: '#absoluteOffset .square.el',
+    translateX: 250,
+    easing: 'easeOutExpo',
+    offset: 1000 // Starts at 1000ms of the timeline
+  })
+  .add({
+    targets: '#absoluteOffset .circle.el',
+    translateX: 250,
+    easing: 'easeOutExpo',
+    offset: 500 // Starts at 500ms of the timeline
+  })
+  .add({
+    targets: '#absoluteOffset .triangle.el',
+    translateX: 250,
+    easing: 'easeOutExpo',
+    offset: 0 // Starts at 0ms of the timeline
+  });
+
+</script>
+</div>
+
+<div id="timelineParameters" class="demo">
+  <h3 class="demo-title">Basic Timeline parameters</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+  </div>
+<script>var timelineParameters = anime.timeline({
+  direction: 'alternate',
+  loop: true
+});
+
+timelineParameters
+  .add({
+    targets: '#timelineParameters .square.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: 60 }, { value: 60 } ],
+    duration: 3000
+  })
+  .add({
+    targets: '#timelineParameters .circle.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: -30 }, { value: -30 } ],
+    duration: 3000,
+    offset: 200
+  })
+  .add({
+    targets: '#timelineParameters .triangle.el',
+    translateX: [ { value: 80 }, { value: 250 } ],
+    translateY: [ { value: -60 }, { value: -30 }, { value: -30 } ],
+    duration: 3000,
+    offset: 400
+  });
+
+</script>
+</div>
+
+<div id="TLParamsInheritance" class="demo">
+  <h3 class="demo-title">Parameters inheritance</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+  </div>
+<script>var TLParamsInheritance = anime.timeline({
+  targets: '#TLParamsInheritance .el',
+  delay: function(el, i) { return i * 200 },
+  duration: 500,
+  easing: 'easeOutExpo',
+  direction: 'alternate',
+  loop: true
+});
+
+TLParamsInheritance
+  .add({
+    translateX: 250,
+  })
+  .add({
+    opacity: .5,
+    translateX: 250,
+    scale: 2,
+  })
+  .add({
+    translateX: 0,
+    scale: 1
+  });
+
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- PLAYBACK -->
+<article id="playback" class="color-08">
+<header>
+  <h2 class="demos-title">Playback</h2>
+</header>
+
+<div id="playPause" class="demo controls">
+  <h3 class="demo-title">Play / Pause</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line player">
+      <button class="play">Play</button>
+      <button class="pause">Pause</button>
+    </div>
+  </div>
+<script>var playPause = anime({
+  targets: '#playPause .el',
+  translateX: 250,
+  delay: function(el, i, l) { return i * 100; },
+  direction: 'alternate',
+  loop: true,
+  autoplay: false
+});
+
+document.querySelector('#playPause .play').onclick = playPause.play;
+document.querySelector('#playPause .pause').onclick = playPause.pause;
+
+</script>
+</div>
+
+<div id="restartAnim" class="demo">
+  <h3 class="demo-title">Restart</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line player">
+      <button class="restart">Restart</button>
+    </div>
+  </div>
+<script>var restartAnim = anime({
+  targets: '#restartAnim .el',
+  translateX: 250,
+  delay: function(el, i, l) { return i * 100; },
+  direction: 'alternate',
+  loop: true
+});
+
+document.querySelector('#restartAnim .restart').onclick = restartAnim.restart;
+
+</script>
+</div>
+
+<div id="reverseAnim" class="demo controls">
+  <h3 class="demo-title">Reverse</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line player">
+      <button class="reverse">Reverse</button>
+    </div>
+  </div>
+<script>var reverseAnim = anime({
+  targets: '#reverseAnim .el',
+  translateX: 250,
+  duration: 2000,
+  delay: function(el, i, l) { return i * 200; }
+});
+
+document.querySelector('#reverseAnim .reverse').onclick = function() {
+  reverseAnim.play();
+  reverseAnim.reverse();
+}
+
+</script>
+</div>
+
+<div id="seekAnim" class="demo controls">
+  <h3 class="demo-title">Seek</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line player">
+      <input class="progress" step=".001" type="range" min="0" max="100" value="0"></input>
+    </div>
+  </div>
+<script>var seekAnim = anime({
+  targets: '#seekAnim .el',
+  translateX: 250,
+  delay: function(el, i, l) { return i * 100; },
+  elasticity: 200,
+  autoplay: false
+});
+
+var seekProgressEl = document.querySelector('#seekAnim .progress');
+
+seekProgressEl.addEventListener('input', function() { 
+  seekAnim.seek(seekAnim.duration * (seekProgressEl.value / 100));
+});
+
+['input','change'].forEach(function(evt) {
+  seekProgressEl.addEventListener(evt, function() { 
+    seekAnim.seek(seekAnim.duration * (seekProgressEl.value / 100));
+  });
+});
+
+</script>
+</div>
+
+<div id="TLcontrols" class="demo controls">
+  <h3 class="demo-title">Timeline controls</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="square shadow"></div>
+      <div class="square el"></div>
+    </div>
+    <div class="line">
+      <div class="circle shadow"></div>
+      <div class="circle el"></div>
+    </div>
+    <div class="line">
+      <div class="triangle shadow"></div>
+      <div class="triangle el"></div>
+    </div>
+    <div class="line player align-items">
+      <button class="play">Play</button>
+      <button class="pause">Pause</button>
+      <button class="restart">Restart</button>
+      <input class="progress" step="2" type="range" min="0" max="100" value="0"></input>
+    </div>
+  </div>
+<script>var controlsProgressEl = document.querySelector('#TLcontrols .progress');
+
+var TLcontrols = anime.timeline({
+  direction: 'alternate',
+  loop: true,
+  easing: 'linear',
+  update: function(anim) {
+    controlsProgressEl.value = anim.progress;
+  }
+});
+
+TLcontrols
+  .add({
+    targets: '#TLcontrols .square.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: 60 }, { value: 60 } ],
+    duration: 3000,
+    offset: 0
+  })
+  .add({
+    targets: '#TLcontrols .circle.el',
+    translateX: [ { value: 80 }, { value: 160 }, { value: 250 } ],
+    translateY: [ { value: 30 }, { value: -30 }, { value: -30 } ],
+    duration: 3000,
+    offset: 0
+  })
+  .add({
+    targets: '#TLcontrols .triangle.el',
+    translateX: [ { value: 80 }, { value: 250 } ],
+    translateY: [ { value: -60 }, { value: -30 }, { value: -30 } ],
+    duration: 3000,
+    offset: 0
+  });
+
+document.querySelector('#TLcontrols .play').onclick = TLcontrols.play;
+document.querySelector('#TLcontrols .pause').onclick = TLcontrols.pause;
+document.querySelector('#TLcontrols .restart').onclick = TLcontrols.restart;
+
+controlsProgressEl.addEventListener('input', function() {
+  TLcontrols.seek(TLcontrols.duration * (controlsProgressEl.value / 100));
+});
+
+['input','change'].forEach(function(evt) {
+  controlsProgressEl.addEventListener(evt, function() {
+    TLcontrols.seek(TLcontrols.duration * (controlsProgressEl.value / 100));
+  });
+});
+
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- CALLBACKS -->
+<article id="callbacks" class="color-09">
+<header>
+  <h2 class="demos-title">Callbacks</h2>
+</header>
+
+<div id="allCallbacks" class="demo">
+  <h3 class="demo-title">All callbacks</h3>
+  <div class="demo-content">
+    <div class="logs">
+      <input class="log update-log"></input>
+      <input class="log began-log"></input>
+      <input class="log completed-log"></input>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line">
+      <div class="small square shadow"></div>
+      <div class="small square el"></div>
+    </div>
+    <div class="line player align-items"></div>
+  </div>
+<script>var updateLogEl2 = document.querySelector('#allCallbacks .update-log');
+var beganLogEl2 = document.querySelector('#allCallbacks .began-log');
+var completedLogEl2 = document.querySelector('#allCallbacks .completed-log');
+
+var allCallbacks = anime({
+  targets: '#allCallbacks .el',
+  translateX: 250,
+  delay: function(el, i) { return 1000 + (i * 100); },
+  duration: function(el, i) { return 500 + (i * 500); }
+});
+
+allCallbacks.update = function(anim) {
+  if (!anim.began) {
+    updateLogEl2.value = 'begins in ' + Math.round(anim.delay - anim.currentTime) + 'ms';
+    beganLogEl2.value = '';
+  } else {
+    updateLogEl2.value = 'begins in 0ms';
+  }
+  if (!anim.completed) {
+    completedLogEl2.value = '';
+  }
+}
+
+allCallbacks.begin =  function() { beganLogEl2.value = 'began'; };
+allCallbacks.complete = function() { completedLogEl2.value = 'completed'; };
+
+</script>
+</div>
+
+<div id="update" class="demo">
+  <h3 class="demo-title">Update</h3>
+  <div class="demo-content">
+    <div class="logs">
+      <input class="log current-time-log"></input>
+      <input class="log progress-log"></input>
+    </div>
+    <div class="large square shadow"></div>
+    <div class="large square el"></div>
+  </div>
+<script>var updateLogEl = document.querySelector('#update .current-time-log');
+var progressLogEl = document.querySelector('#update .progress-log');
+
+var update = anime({
+  targets: '#callbacks .el',
+  translateX: 250,
+  delay: 1000,
+  update: function(anim) {
+    updateLogEl.value = 'current time : ' + Math.round(anim.currentTime) + 'ms';
+    progressLogEl.value = 'progress : ' + Math.round(anim.progress) + '%';
+  }
+});
+</script>
+</div>
+
+<div id="begin" class="demo">
+  <h3 class="demo-title">Begin</h3>
+  <div class="demo-content">
+    <div class="logs">
+      <input class="log began-log" value="began : false"></input>
+    </div>
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var beganLogEl = document.querySelector('#begin .began-log');
+
+var begin = anime({
+  targets: '#begin .el',
+  translateX: 250,
+  delay: 1000,
+  begin: function(anim) {
+    beganLogEl.value = 'began : ' + anim.began;
+  }
+});
+</script>
+<script>
+begin.update = function(anim) {
+  if (!anim.began) {
+    beganLogEl.value = 'began : ' + anim.began;
+  }
+}
+</script>
+</div>
+
+<div id="run" class="demo">
+  <h3 class="demo-title">Run</h3>
+  <div class="demo-content">
+    <div class="logs">
+      <input class="log current-time-log" value="not running"></input>
+      <input class="log progress-log" value="progress : 0%"></input>
+    </div>
+    <div class="large square shadow"></div>
+    <div class="large square el"></div>
+  </div>
+<script>var runLogEl = document.querySelector('#run .current-time-log');
+var runProgressLogEl = document.querySelector('#run .progress-log');
+
+var run = anime({
+  targets: '#run .el',
+  translateX: 250,
+  delay: 1000,
+  run: function(anim) {
+    runLogEl.value = 'running';
+    runProgressLogEl.value = 'progress : ' + Math.round(anim.progress) + '%';
+  },
+  complete: function(anim) {
+    runLogEl.value = 'not running';
+    runProgressLogEl.value = 'progress : 100%';
+  }
+});
+</script>
+</div>
+
+<div id="complete" class="demo">
+  <h3 class="demo-title">Complete</h3>
+  <div class="demo-content">
+    <div class="logs">
+      <input class="log completed-log" value="completed : false"></input>
+    </div>
+    <div class="square shadow"></div>
+    <div class="square el"></div>
+  </div>
+<script>var completedLogEl = document.querySelector('#complete .completed-log');
+
+var complete = anime({
+  targets: '#complete .el',
+  translateX: 250,
+  complete: function(anim) {
+    completedLogEl.value = 'completed : ' + anim.completed;
+  }
+});
+</script>
+<script>
+complete.update = function(anim) {
+  if (!anim.completed) {
+    completedLogEl.value = 'completed : ' + anim.completed;
+  }
+}
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- PROMISES -->
+<article id="promises" class="color-10">
+<header>
+  <h2 class="demos-title">Promises</h2>
+</header>
+
+<div id="finishedPromise" class="demo">
+  <h3 class="demo-title">Finished</h3>
+  <div class="demo-content">
+    <div class="logs">
+      <input class="log finished-log"></input>
+    </div>
+    <div class="large square shadow"></div>
+    <div class="large square el"></div>
+  </div>
+<script>var finishedLogEl = document.querySelector('#finishedPromise .finished-log');
+
+var finishedPromise = anime({
+  targets: '#promises .el',
+  translateX: 250,
+  delay: 1000
+});
+
+var promise = finishedPromise.finished.then(logFinished);
+
+function logFinished() {
+  finishedLogEl.value = 'Promise resolved';
+
+  // Rebind the promise, since this demo can be looped.
+  setTimeout(function() {
+    promise = finishedPromise.finished.then(logFinished);
+  });
+}
+
+finishedPromise.update = function(anim) {
+  if (!anim.completed) {
+    finishedLogEl.value = '';
+  }
+}
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- SVG -->
+<article id="svg" class="color-11">
+<header>
+  <h2 class="demos-title">SVG</h2>
+</header>
+
+<div id="motionPath" class="demo">
+  <h3 class="demo-title">Motion path</h3>
+  <div class="demo-content">
+    <div class="motion-path">
+      <div class="small square shadow follow-path"></div>
+      <div class="small square el follow-path"></div>
+      <svg width="256" height="112" viewBox="0 0 256 112">
+        <path fill="none" stroke="currentColor" stroke-width="1" d="M8,56 C8,33.90861 25.90861,16 48,16 C70.09139,16 88,33.90861 88,56 C88,78.09139 105.90861,92 128,92 C150.09139,92 160,72 160,56 C160,40 148,24 128,24 C108,24 96,40 96,56 C96,72 105.90861,92 128,92 C154,93 168,78 168,56 C168,33.90861 185.90861,16 208,16 C230.09139,16 248,33.90861 248,56 C248,78.09139 230.09139,96 208,96 L48,96 C25.90861,96 8,78.09139 8,56 Z"/>
+      </svg>
+    </div>
+  </div>
+<script>var path = anime.path('#motionPath path');
+
+var motionPath = anime({
+  targets: '#motionPath .el',
+  translateX: path('x'),
+  translateY: path('y'),
+  rotate: path('angle'),
+  easing: 'linear',
+  duration: 2000,
+  loop: true
+});
+
+</script>
+</div>
+
+<div id="morphing" class="demo">
+  <h3 class="demo-title">Morphing</h3>
+  <div class="demo-content align-center">
+    <svg width="140" height="140" viewBox="0 0 140 140">
+      <g fill="none" fill-rule="evenodd">
+        <g fill="currentColor" fill-opacity=".15" transform="translate(0 6)">
+          <polygon points="70 0 136.574 48.369 111.145 126.631 28.855 126.631 3.426 48.369"/>
+          <polygon points="70 18 119.455 53.931 100.565 112.069 39.435 112.069 20.545 53.931"/>
+          <polygon points="70 34.86 101.727 57.911 89.609 95.209 50.391 95.209 38.273 57.911"/>
+          <polygon points="70 50.898 84.864 61.697 79.186 79.171 60.814 79.171 55.136 61.697"/>
+        </g>
+        <polygon class="polymorph" stroke-width="1" stroke="currentColor" points="70 24 119.574 60.369 100.145 117.631 50.855 101.631 3.426 54.369"/>
+      </g>
+    </svg>
+  </div>
+<script>var morphing = anime({
+  targets: '#morphing .polymorph',
+  points: [
+    { value: '70 41 118.574 59.369 111.145 132.631 60.855 84.631 20.426 60.369' },
+    { value: '70 6 119.574 60.369 100.145 117.631 39.855 117.631 55.426 68.369' },
+    { value: '70 57 136.574 54.369 89.145 100.631 28.855 132.631 38.426 64.369' },
+    { value: '70 24 119.574 60.369 100.145 117.631 50.855 101.631 3.426 54.369' }
+  ],
+  easing: 'easeOutQuad',
+  duration: 2000,
+  loop: true
+});
+
+</script>
+</div>
+
+<div id="lineDrawing" class="demo">
+  <h3 class="demo-title">Line drawing</h3>
+  <div class="demo-content align-center">
+    <svg viewBox="0 0 280 100">
+      <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-width="1" class="lines">
+        <path d="M58 80V50.12C57.7 41.6 51.14 35 43 35a15 15 0 0 0 0 30h7.5v15H43a30 30 0 1 1 0-60c16.42 0 29.5 13.23 30 29.89V80H58z"/>
+        <path d="M73 80V20H58v60h15z"/>
+        <path d="M58 80V49.77C58.5 33.23 71.58 20 88 20a30 30 0 0 1 30 30v30h-15V50a15 15 0 0 0-15-15c-8.14 0-14.7 6.6-15 15.12V80H58zm75 0V20h-15v60h15z"/>
+        <path d="M118 80V49.77C118.5 33.23 131.58 20 148 20a30 30 0 0 1 30 30v30h-15V50a15 15 0 0 0-15-15c-8.14 0-14.7 6.6-15 15.12V80h-15zm-7.5-60a7.5 7.5 0 1 1-7.48 8v-1c.25-3.9 3.5-7 7.48-7z"/>
+        <path d="M133 65a15 15 0 0 1-15-15v-7.5h-15V50a30 30 0 0 0 30 30V65zm30 15V49.77C163.5 33.23 176.58 20 193 20a30 30 0 0 1 30 30v30h-15V50a15 15 0 0 0-15-15c-8.14 0-14.7 6.6-15 15.12V80h-15z"/>
+        <path d="M238 65a15 15 0 0 1 0-30c8.1 0 14.63 6.53 15 15h-15v15h30V49.89C267.5 33.23 254.42 20 238 20a30 30 0 0 0 0 60V65z"/>
+        <path d="M260.48 65a7.5 7.5 0 1 1-7.48 8v-1c.26-3.9 3.5-7 7.48-7z"/>
+      </g>
+    </svg>
+  </div>
+<script>var lineDrawing = anime({
+  targets: '#lineDrawing .lines path',
+  strokeDashoffset: [anime.setDashoffset, 0],
+  easing: 'easeInOutSine',
+  duration: 1500,
+  delay: function(el, i) { return i * 250 },
+  direction: 'alternate',
+  loop: true
+});
+
+</script>
+</div>
+
+</article>
+<!-- -->
+
+<!-- EASINGS -->
+<article id="easings" class="color-12">
+  <header>
+    <h2 class="demos-title">Easings</h2>
+  </header>
+
+<div id="penner" class="demo">
+  <h3 class="demo-title">Built in equations</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square linear"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InQuad"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InCubic"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InQuart"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InQuint"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InSine"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InExpo"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InCirc"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InBack"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutQuad"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutCubic"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutQuart"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutQuint"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutSine"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutExpo"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutCirc"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square OutBack"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutQuad"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutCubic"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutQuart"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutQuint"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutSine"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutExpo"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutCirc"></div>
+    </div>
+    <div class="line">
+      <div class="small stretched square shadow"></div>
+      <div class="small stretched square InOutBack"></div>
+    </div>
+  </div>
+<script>var penner = anime.timeline();
+penner
+  .add({
+    targets: '#penner .linear', translateX: 250, offset: 0,
+    easing: 'linear'
+  })
+  .add({
+    targets: '#penner .InQuad', translateX: 250, offset: 0,
+    easing: 'easeInQuad'
+  })
+  .add({
+    targets: '#penner .InCubic', translateX: 250, offset: 0,
+    easing: 'easeInCubic'
+  })
+  .add({
+    targets: '#penner .InQuart', translateX: 250, offset: 0,
+    easing: 'easeInQuart'
+  })
+  .add({
+    targets: '#penner .InQuint', translateX: 250, offset: 0,
+    easing: 'easeInQuint'
+  })
+  .add({
+    targets: '#penner .InSine', translateX: 250, offset: 0,
+    easing: 'easeInSine'
+  })
+  .add({
+    targets: '#penner .InExpo', translateX: 250, offset: 0,
+    easing: 'easeInExpo'
+  })
+  .add({
+    targets: '#penner .InCirc', translateX: 250, offset: 0,
+    easing: 'easeInCirc'
+  })
+  .add({
+    targets: '#penner .InBack', translateX: 250, offset: 0,
+    easing: 'easeInBack'
+  })
+  .add({
+    targets: '#penner .OutQuad', translateX: 250, offset: 0,
+    easing: 'easeOutQuad'
+  })
+  .add({
+    targets: '#penner .OutCubic', translateX: 250, offset: 0,
+    easing: 'easeOutCubic'
+  })
+  .add({
+    targets: '#penner .OutQuart', translateX: 250, offset: 0,
+    easing: 'easeOutQuart'
+  })
+  .add({
+    targets: '#penner .OutQuint', translateX: 250, offset: 0,
+    easing: 'easeOutQuint'
+  })
+  .add({
+    targets: '#penner .OutSine', translateX: 250, offset: 0,
+    easing: 'easeOutSine'
+  })
+  .add({
+    targets: '#penner .OutExpo', translateX: 250, offset: 0,
+    easing: 'easeOutExpo'
+  })
+  .add({
+    targets: '#penner .OutCirc', translateX: 250, offset: 0,
+    easing: 'easeOutCirc'
+  })
+  .add({
+    targets: '#penner .OutBack', translateX: 250, offset: 0,
+    easing: 'easeOutBack'
+  })
+  .add({
+    targets: '#penner .InOutQuad', translateX: 250, offset: 0,
+    easing: 'easeInOutQuad'
+  })
+  .add({
+    targets: '#penner .InOutCubic', translateX: 250, offset: 0,
+    easing: 'easeInOutCubic'
+  })
+  .add({
+    targets: '#penner .InOutQuart', translateX: 250, offset: 0,
+    easing: 'easeInOutQuart'
+  })
+  .add({
+    targets: '#penner .InOutQuint', translateX: 250, offset: 0,
+    easing: 'easeInOutQuint'
+  })
+  .add({
+    targets: '#penner .InOutSine', translateX: 250, offset: 0,
+    easing: 'easeInOutSine'
+  })
+  .add({
+    targets: '#penner .InOutExpo', translateX: 250, offset: 0,
+    easing: 'easeInOutExpo'
+  })
+  .add({
+    targets: '#penner .InOutCirc', translateX: 250, offset: 0,
+    easing: 'easeInOutCirc'
+  })
+  .add({
+    targets: '#penner .InOutBack', translateX: 250, offset: 0,
+    easing: 'easeInOutBack'
+  });
+</script>
+</div>
+
+<div id="elasticity" class="demo">
+  <h3 class="demo-title">Elasticity</h3>
+  <div class="demo-content">
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-0"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-100"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-200"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-300"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-400"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-500"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-600"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-700"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-800"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-900"></div>
+    </div>
+    <div class="line">
+      <div class="stretched square shadow"></div>
+      <div class="stretched square elasticity-1000"></div>
+    </div>
+  </div>
+<script>var elasticity = anime.timeline();
+elasticity.add({
+  targets: '#elasticity .elasticity-0', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 0,
+})
+.add({
+  targets: '#elasticity .elasticity-100', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 100,
+})
+.add({
+  targets: '#elasticity .elasticity-200', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 200,
+})
+.add({
+  targets: '#elasticity .elasticity-300', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 300,
+})
+.add({
+  targets: '#elasticity .elasticity-400', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 400,
+})
+.add({
+  targets: '#elasticity .elasticity-500', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 500,
+})
+.add({
+  targets: '#elasticity .elasticity-600', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 600,
+})
+.add({
+  targets: '#elasticity .elasticity-700', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 700,
+})
+.add({
+  targets: '#elasticity .elasticity-800', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 800,
+})
+.add({
+  targets: '#elasticity .elasticity-900', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 900,
+})
+.add({
+  targets: '#elasticity .elasticity-1000', translateX: 250, offset: 0,
+  duration: 3000,
+  elasticity: 1000,
+});
+</script>
+</div>
+
+<div id="customBezier" class="demo">
+  <h3 class="demo-title">Custom Bézier curves</h3>
+  <div class="demo-content">
+    <div class="square large shadow"></div>
+    <div class="square large el"></div>
+  </div>
+<script>var customBezier = anime({
+  targets: '#customBezier .el',
+  translateX: 250,
+  easing: [.91,-0.54,.29,1.56]
+});
+</script>
+</div>
+
+<div id="customEasingFunction" class="demo">
+  <h3 class="demo-title">Custom easing function</h3>
+  <div class="demo-content">
+    <div class="square large shadow"></div>
+    <div class="square large el"></div>
+  </div>
+<script>anime.easings['myCustomEasingName'] = function(t) {
+  return Math.pow(Math.sin(t * 3), 3);
+}
+
+var customEasingFunction = anime({
+  targets: '#customEasingFunction .el',
+  translateX: 250,
+  easing: 'myCustomEasingName'
+});
+</script>
+</div>
+
+</article>
+<!-- -->
+
+    </section>
+    <section class="pane code-examples">
+      <div class="code-pane code-pane-js">
+        <header class="code-header">
+          <h2>JavaScript</h2>
+        </header>
+        <pre class="code-output js-output"></pre>
+      </div>
+      <div class="code-pane code-pane-html">
+        <header class="code-header">
+          <h2>HTML</h2>
+        </header>
+        <pre class="code-output html-output"></pre>
+      </div>
+    </section>
+  </div>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-79927007-1', 'auto');
+    ga('send', 'pageview');
+  </script>
+  <script src="assets/js/highlight.pack.js"></script>
+  <script src="assets/js/beautify-html.js"></script>
+  <script src="assets/js/scripts.js"></script>
+</body>
+</html>

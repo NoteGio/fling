@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Anime timeline | anime.js</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:title" content="anime.js">
+  <meta property="og:url" content="http://animejs.com">
+  <meta property="og:description" content="Javascript Animation Engine">
+  <meta property="og:image" content="http://animejs.com/documentation/assets/img/icons/og.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="anime.js">
+  <meta name="twitter:site" content="@juliangarnier">
+  <meta name="twitter:description" content="Javascript Animation Engine">
+  <meta name="twitter:image" content="http://animejs.com/documentation/assets/img/icons/twitter.png">
+  <link rel="apple-touch-icon-precomposed" href="../assets/img/icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/icons/favicon.png" >
+  <link href="../assets/css/anime.css" rel="stylesheet">
+  <script src="../../anime.js"></script>
+  <!-- <script src="../assets/js/anime.2.0.1.js"></script> -->
+  <style>
+
+    body {
+      display: flex;
+      flex-wrap: no-wrap;
+      justify-content: space-around;
+      align-items: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .el {
+      width: 10px;
+      height: 10px;
+      background: white;
+      transform: scale(0);
+      margin: 10px;
+    }
+
+    .controls {
+      display: flex;
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 100px;
+      background: white;
+    }
+
+    .buttons {
+      display: flex;
+    }
+
+    .buttons button {
+      width: 100px;
+    }
+
+    .timeline {
+      display: flex;
+      flex-grow: 1;
+      padding: 20px;
+    }
+
+    .progress {
+      flex-grow: 1;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="el no-offset"></div>
+  <div class="el relative-offset"></div>
+  <div class="el absolute-offset"></div>
+  <div class="el multiple-targets-01"></div>
+  <div class="el multiple-targets-02"></div>
+  <div class="el multiple-targets-03"></div>
+  <div class="el multiple-targets-04"></div>
+
+  <div class="controls">
+    <div class="buttons">
+      <button class="play">Play</button>
+      <button class="pause">Pause</button>
+      <button class="restart">Restart</button>
+    </div>
+    <div class="timeline">
+      <input class="progress" type="range" min="0" max="100" value="0">
+    </div>
+  </div>
+
+</body>
+<script>
+
+  var noOffset = anime.timeline({
+    autoplay: true
+  });
+
+  noOffset
+    .add({
+      targets: '.no-offset',
+      translateX: -100,
+      translateY: -100,
+      scale: 2,
+      background: '#FF1461',
+      begin: function() { console.log('noOffset animation 1 began')},
+      complete: function() { console.log('noOffset animation 1 completed')}
+    })
+    .add({
+      targets: '.no-offset',
+      translateX: -100,
+      translateY: 100,
+      scale: 3,
+      background: '#18FF92',
+      begin: function() { console.log('noOffset animation 2 began')},
+      complete: function() { console.log('noOffset animation 2 completed')}
+    })
+    .add({
+      targets: '.no-offset',
+      translateX: 100,
+      translateY: 100,
+      rotate: 120,
+      scale: 4,
+      background: '#5A87FF',
+      begin: function() { console.log('noOffset animation 3 began')},
+      complete: function() { console.log('noOffset animation 3 completed')}
+    })
+    .add({
+      targets: '.no-offset',
+      translateX: 100,
+      translateY: -100,
+      scale: 5,
+      background: '#FBF38C',
+      begin: function() { console.log('noOffset animation 4 began')},
+      complete: function() { console.log('noOffset animation 4 completed')}
+    })
+    .add({
+      targets: '.no-offset',
+      translateX: 100,
+      translateY: -100,
+      scale: '+=8',
+      background: '#FBF38C',
+      begin: function() { console.log('noOffset animation 5 began')},
+      complete: function() { console.log('noOffset animation 5 completed')}
+    });
+
+  var relativeOffset = anime.timeline({
+    autoplay: true
+  });
+
+  relativeOffset
+    .add({
+      targets: '.relative-offset',
+      translateX: -100,
+      translateY: -100,
+      scale: 2,
+      background: '#FF1461',
+    })
+    .add({
+      targets: '.relative-offset',
+      translateX: -100,
+      translateY: 100,
+      scale: 3,
+      background: '#18FF92',
+      offset: '-=500'
+    })
+    .add({
+      targets: '.relative-offset',
+      translateX: 100,
+      translateY: 100,
+      rotate: 120,
+      scale: 4,
+      background: '#5A87FF',
+      offset: '-=500'
+    })
+    .add({
+      targets: '.relative-offset',
+      translateX: 100,
+      translateY: -100,
+      scale: 5,
+      background: '#FBF38C',
+      offset: '+=500'
+    })
+    .add({
+      targets: '.relative-offset',
+      translateX: 100,
+      translateY: -100,
+      scale: '+=8',
+      background: '#FBF38C',
+      offset: '+=500'
+    });
+
+  var absoluteOffset = anime.timeline({
+    autoplay: true
+  });
+
+  absoluteOffset
+    .add({
+      targets: '.absolute-offset',
+      translateX: -100,
+      translateY: -100,
+      scale: 2,
+      background: '#FF1461',
+      offset: 0
+    })
+    .add({
+      targets: '.absolute-offset',
+      translateX: -100,
+      translateY: 100,
+      scale: 3,
+      background: '#18FF92',
+      offset: 1000
+    })
+    .add({
+      targets: '.absolute-offset',
+      translateX: 100,
+      translateY: 100,
+      rotate: 120,
+      scale: 4,
+      background: '#5A87FF',
+      offset: 2000
+    })
+    .add({
+      targets: '.absolute-offset',
+      translateX: 100,
+      translateY: -100,
+      scale: 5,
+      background: '#FBF38C',
+      offset: 3000
+    })
+    .add({
+      targets: '.absolute-offset',
+      translateX: 100,
+      translateY: -100,
+      scale: '+=8',
+      background: '#FBF38C',
+      offset: 4000
+    });
+
+  var controlsProgressEl = document.querySelector('.controls .progress');
+
+  var multipleTargets = anime.timeline({
+    autoplay: false,
+    direction: 'reverse',
+    update: function(anim) {
+      controlsProgressEl.value = anim.progress;
+    },
+    begin: function(anim) {
+      console.log('multiple begin');
+    },
+    complete: function(anim) {
+      console.log('multiple complete');
+    }
+  });
+
+  document.querySelector('.controls .play').onclick = multipleTargets.play;
+  document.querySelector('.controls .pause').onclick = multipleTargets.pause;
+  document.querySelector('.controls .restart').onclick = multipleTargets.restart;
+
+  multipleTargets
+    .add({
+      targets: '.multiple-targets-01',
+      translateY: -100,
+      scale: 8,
+      background: '#FF1461',
+      duration: 500,
+      begin: function() { console.log('multipleTargets animation 1 began')},
+      complete: function() { console.log('multipleTargets animation 1 completed')}
+    })
+    .add({
+      targets: '.multiple-targets-02',
+      translateY: -100,
+      scale: 8,
+      background: '#18FF92',
+      duration: 500,
+      begin: function() { console.log('multipleTargets animation 2 began')},
+      complete: function() { console.log('multipleTargets animation 2 completed')}
+    })
+    .add({
+      targets: '.multiple-targets-03',
+      translateY: -100,
+      scale: 8,
+      background: '#5A87FF',
+      duration: 500,
+      begin: function() { console.log('multipleTargets animation 3 began')},
+      complete: function() { console.log('multipleTargets animation 3 completed')}
+    })
+    .add({
+      targets: '.multiple-targets-04',
+      translateY: -100,
+      scale: 8,
+      background: '#FBF38C',
+      duration: 500,
+      begin: function() { console.log('multipleTargets animation 4 began')},
+      complete: function() { console.log('multipleTargets animation 4 completed')}
+    })
+    .add({
+      targets: ['.multiple-targets-01', '.multiple-targets-02', '.multiple-targets-03', '.multiple-targets-04'],
+      translateY: -100,
+      scale: 13,
+      background: '#FBF38C',
+      duration: 1000,
+      begin: function() { console.log('multipleTargets animation 5 began')},
+      complete: function() { console.log('multipleTargets animation 5 completed')}
+    });
+
+    controlsProgressEl.addEventListener('input', function() {
+      multipleTargets.seek(multipleTargets.duration * (controlsProgressEl.value / 100));
+    });
+
+  </script>
+  <script src="../assets/js/stats.js"></script>
+</html>
