@@ -201,10 +201,10 @@ textarea:focus, input:focus, select:focus {
 .token_select, select {
 
     background:transparent;
-    width: 63%;
+    width: 62.5%;
     padding: 5px;
     padding-left:10px;
-    margin-left:15px;
+    margin-left:0px;
     font-size: 16px;
     font-weight:300;
     line-height: 1;
@@ -214,6 +214,12 @@ textarea:focus, input:focus, select:focus {
     -webkit-appearance:none;
     -webkit-tap-highlight-color:none;
 
+}
+
+@media screen and (max-width:1200px) {
+    .token_select, select {
+        width:65%;
+    }
 }
 
 select {
@@ -229,6 +235,48 @@ option {
 
 strong {
 
+}
+
+table {
+
+    display:table;
+    float:center;
+    width:100%;
+    border-collapse:collapse;
+    transform:translateX(5%);
+
+}
+@media screen and (max-width:1200px) {
+
+    table {
+        transform:translateX(0);
+    }
+
+}
+
+th {
+
+    width:200px;
+    text-align:right;
+    font-weight:500;
+    padding-right:20px;
+
+}
+
+@media screen and (max-width:1000px) {
+
+    th {
+        text-align:justify-right;
+    }
+
+}
+
+tr {
+    text-align:left;
+}
+
+td {
+    min-width:400px;
 }
 
 #claim_mbgn {
@@ -284,3 +332,4 @@ strong {
         font-weight:500;
         padding-bottom:10px;
     }
+
