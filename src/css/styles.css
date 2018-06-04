@@ -297,14 +297,14 @@ td {
 
 }
 
-#mbgn_target_address {
+.target_address {
 
     width:60%;
     max-width:60%;
 
 }
 
-#mbgn_send_amount {
+#send_amount {
 
     width:60%;
     max-width:60%;
@@ -325,6 +325,12 @@ td {
     padding-bottom:4px;
 }
 
+#target_address_list {
+    list-style-type: none;
+    padding-left: 0px;
+    margin: 0px;
+}
+
 @media screen and (max-width:1200px) {
     .left {
         margin:0;
@@ -332,4 +338,14 @@ td {
         font-weight:500;
         padding-bottom:10px;
     }
+}
 
+.send_token {
+    margin: auto;
+    display: block;
+}
+
+
+.invalid_address {
+    background-color: red;
+}
