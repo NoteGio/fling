@@ -13,12 +13,26 @@
     <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js"></script>
     <script src="//cdn.jsdelivr.net/npm/mobile-detect@1.4.1/mobile-detect.min.js"></script>
     <script>
-    function recalculateTotal() {
-      var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
-      $("#total_amount").html(magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length).toString());
+    // function recalculateTotal() {
+    //   var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
+    //   $("#total_amount").html(magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length).toString());
+    // }
+    function markValid(input) {
+      if(input.val() == "") {
+        input.parent().removeClass("invalid_address");
+        input.parent().removeClass("valid_address");
+        input.parent().addClass("empty_address");
+      } else if (!/0x[a-fA-F0-9]{40}/.exec(input.val())) {
+        input.parent().addClass("invalid_address");
+        input.parent().removeClass("valid_address");
+        input.parent().removeClass("empty_address");
+      } else {
+        input.parent().removeClass("invalid_address");
+        input.parent().removeClass("empty_address");
+        input.parent().addClass("valid_address");
+      }
     }
     function addressBoxChange(evt){
-      console.log(evt.keyCode);
       if(evt.keyCode == 13) {
         $(this).val($(this).val() + ' ');
       }
@@ -35,20 +49,15 @@
             newItemInput.focus();
             lastItem = newItemInput;
             newItemInput.on("keyup", addressBoxChange);
+            markValid(newItemInput);
             newItem.children("button").on("click", function(){
               $(this).parent().remove();
             })
           }
         }
       }
-      if(!/0x[a-fA-F0-9]{40}/.exec($(this).val())) {
-        $(this).parent().addClass("invalid_address");
-        $(this).parent().removeClass("valid_address");
-      } else {
-        $(this).parent().removeClass("invalid_address");
-        $(this).parent().addClass("valid_address");
-      }
-      recalculateTotal();
+      markValid($(this));
+      // recalculateTotal();
     }
     $(document).ready(function(){
       if(!window.web3) {
@@ -151,11 +160,20 @@
             $(".token_attributes").show();
           }
         });
-        $("#send_amount").on("change", recalculateTotal);
+        // $("#send_amount").on("change", recalculateTotal);
       }).catch(function(err) {
         console.log("err", err);
       });
     });
+    setInterval(function() {
+      if($(".invalid_address").length > 0 || $("#token_select select").val() == "not-selected" || $(".valid_address").length == 0 || $(".approved:visible").length == 0 || $("#send_amount").val() <= 0 || $("#send_amount").val() == "") {
+        $(".send_token").hide();
+      } else {
+        $("#recipient_count").text($(".valid_address").length);
+        $("#total_amount").text($("#send_amount").val() * $(".valid_address").length);
+        $(".send_token").show();
+      }
+    }, 100)
     </script>
 </head>
 <body class=".wrapper">
@@ -201,7 +219,7 @@
           </tr>
           <tr>
             <th>Amount Per Recipient: </th>
-            <td><input type="text" id="send_amount" >(<span id="total_amount">0</span>)</td>
+            <td><input type="text" id="send_amount" ></td>
           </tr>
           <tr>
             <th>Recipient Addresses:</th>
@@ -210,7 +228,7 @@
             </ul> </td>
           </tr>
         </table>
-        <button class="send_token">Send <span id="token_name">Token</span>!</button>
+        <button class="send_token">Split <span id="total_amount">0</span> <span id="token_name">Token</span> among <span id="recipient_count">0</span> users!</button>
       </article>
       <p id="sendNotice" hidden="true"></p>
     </section>
