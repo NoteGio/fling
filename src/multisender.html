@@ -171,8 +171,8 @@
               addresses.push($(this).val());
             })
             var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
-            var value = magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length);
             if($("#token_select select").val() == "ETH") {
+              var value = magnitude.mul($("#send_amount").val()).mul($(".valid_address").length);
               multiSendContract.multiSendEth(addresses, {from: accounts[0], value: value}, function(err, tx) {
                 if(err) {
                   $(".submit_result").html(err);
@@ -181,6 +181,7 @@
                 }
               })
             } else {
+              var value = magnitude.mul($("#send_amount").val());
               multiSendContract.multiSend($("#token_address").val(), addresses, value, {from: accounts[0]}, function(err, tx) {
                 if(err) {
                   $(".submit_result").html(err);
