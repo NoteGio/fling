@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
 
-    font-size:200%;
+    font-size:300%;
     font-weight:200;
 
 }
@@ -93,10 +93,22 @@ h2 {
 
     h2 {
         font-size:100%;
+        font-weight:500;
     }
 }
 
 a {
+
+}
+
+i {
+
+    color:#cc3615;
+    vertical-align:middle;
+    font-size:50%;
+    padding-left:4px;
+    padding-right:4px;
+    transform:scale(1.6,1.6);
 
 }
 
@@ -250,6 +262,8 @@ table {
 
     table {
         transform:translateX(0);
+        float:left;
+
     }
 
 }
@@ -266,7 +280,16 @@ th {
 @media screen and (max-width:1000px) {
 
     th {
-        text-align:justify-right;
+        text-align:center;
+        font-size:12px;
+        font-weight:600;
+        width:150px;
+        margin-left:0;
+        padding-right:4px;
+        padding-left:0;
+        border-left:0;
+        column-width:100px;
+
     }
 
 }
@@ -288,6 +311,22 @@ td {
     display:inline-block;
     align-items:center;
     clear:all;
+
+} 
+
+@media screen and (max-width:1200px) {
+
+    #center {
+
+        display:inline-block;
+        margin-left:0;
+        align-items:left;
+        padding-left:0;
+        border-left:0;
+        align-self:left;
+        width:400px;
+
+    }
 
 }
 
@@ -331,6 +370,15 @@ td {
     margin: 0px;
 }
 
+.delete_address {
+    transform:translateX(4px);
+    line-height:50%;
+    vertical-align:middle;
+    border-color:#cc3615;
+}
+
+
+
 @media screen and (max-width:1200px) {
     .left {
         margin:0;
@@ -347,5 +395,5 @@ td {
 
 
 .invalid_address {
-    background-color: red;
+    background: linear-gradient(to right, #fefefe, #ffcc1a, #cc3615, #fefefe 65%);
 }
