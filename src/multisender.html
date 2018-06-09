@@ -17,12 +17,13 @@
     //   var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
     //   $("#total_amount").html(magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length).toString());
     // }
+    var addressRegex = /^0x[a-fA-F0-9]{40}$/;
     function markValid(input) {
       if(input.val() == "") {
         input.parent().removeClass("invalid_address");
         input.parent().removeClass("valid_address");
         input.parent().addClass("empty_address");
-      } else if (!/0x[a-fA-F0-9]{40}/.exec(input.val())) {
+      } else if (!addressRegex.exec(input.val())) {
         input.parent().addClass("invalid_address");
         input.parent().removeClass("valid_address");
         input.parent().removeClass("empty_address");
@@ -139,6 +140,15 @@
               });
             });
           });
+          $("#token_address").on("change", function() {
+            if(addressRegex.exec($(this).val())) {
+              $(this).parent().removeClass("invalid_address")
+              $(".token_attributes").show();
+            } else {
+              $(this).parent().addClass("invalid_address")
+              $(".token_attributes").hide();
+            }
+          });
           $(".custom_options").hide();
           $(".token_attributes").hide();
           $(".custom_options input").val("");
@@ -152,7 +162,7 @@
             $(".custom_options").show();
             $("#token_decimals").val(18);
             $("#token_name").text("Token");
-            $(".token_attributes").show();
+            $(".token_attributes").hide();
           } else if (token_id == "not-selected") {
             $(".send_token").hide();
 
@@ -209,9 +219,11 @@
     }, 100)
     </script>
 </head>
-<body class=".wrapper">
+<body>
+  <a href="https://github.com/notegio/fling"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Fork me on GitHub"></a>
+  <div class="wrapper">
   <header>
-    <h1>OpenRelay Fling</h1>
+    <h1>Fling</h1>
     <h2>Send tokens to multiple addresses in one shot!</h2>
     <svg version="1.1" viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg">
       <g transform="translate(150 150)">
@@ -250,12 +262,6 @@
               </select>
             </td>
           </tr>
-          <tr class="token_attributes" hidden="true">
-            <th>Allowance:</th>
-            <td><button id="set_allowance"><i class="fa fa-spinner fa-pulse fa-fw allowance_loading"></i>
-<span class="unapproved" hidden="true">Set allowance</span><span class="approved" hidden="true"><i class="fa fa-check" aria-hidden="true"></i></span>
-</button><br /><span id="allowance_pending" hidden="true"></span></td>
-          </tr>
           <tr class="custom_options">
             <th>Token Address:</th>
             <td><input type="text" id="token_address"></input></td>
@@ -263,6 +269,12 @@
           <tr class="custom_options">
             <th>Token Decimals</th>
             <td><input type="number" id="token_decimals"></input></td>
+          </tr>
+          <tr class="token_attributes" hidden="true">
+            <th>Allowance:</th>
+            <td><button id="set_allowance"><i class="fa fa-spinner fa-pulse fa-fw allowance_loading"></i>
+              <span class="unapproved" hidden="true">Set allowance</span><span class="approved" hidden="true"><i class="fa fa-check" aria-hidden="true"></i></span>
+            </button><br /><span id="allowance_pending" hidden="true"></span></td>
           </tr>
           <tr>
             <th>Amount (to each):</th>
@@ -281,5 +293,7 @@
       <p id="sendNotice" hidden="true"></p>
     </section>
   </main>
+  <footer>&copy; <a href="https://openrelay.xyz/">Open Relay LLC</a> &mdash; <a href="./terms-of-use.html">Terms of Use</a></footer>
+</div>
 </body>
 </html>

@@ -1,4 +1,8 @@
 html {
+    background-color: #fefefe;
+}
+
+.wrapper {
 
     position:absolute;
     top:50%;
@@ -9,7 +13,6 @@ html {
     margin:0;
     border:0;
     padding:0;
-    background-color: #fefefe;
     color: #00223a;
     font-family:"Avenir Next", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight:400;
@@ -312,7 +315,7 @@ td {
     align-items:center;
     clear:all;
 
-} 
+}
 
 @media screen and (max-width:1200px) {
 
