@@ -2,7 +2,7 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-  <title>OpenRelay Fling</title>
+  <title>Fling - OpenRelay</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="A dApp that lets you send tokens to multiple accounts at once!" />
@@ -154,6 +154,12 @@
             if(addressRegex.exec($(this).val())) {
               $(this).parent().removeClass("invalid_address")
               $(".token_attributes").show();
+              web3.eth.getAccounts(function(err, accounts) {
+                token.at($("#token_address").val()).balanceOf(accounts[0], function(err, balance) {
+                  $("#token_balance").html(web3.toBigNumber(balance).div(web3.toBigNumber(10).pow($("#token_decimals").val())).toString());
+                  $("#token_balance").data("balance", web3.toBigNumber(balance));
+                });
+              });
             } else {
               $(this).parent().addClass("invalid_address")
               $(".token_attributes").hide();
@@ -168,6 +174,11 @@
             // Special case
             $("#token_name").text("Ether");
             $("#token_decimals").val(18);
+            web3.eth.getAccounts(function(err, accounts) {
+              web3.eth.getBalance(accounts[0], function(err, balance) {
+                $("#token_balance").html(web3.toBigNumber(balance).div(web3.toBigNumber(10).pow($("#token_decimals").val())).toString());
+              })
+            })
           } else if (token_id == "_"){
             $(".custom_options").show();
             $("#token_decimals").val(18);
@@ -182,6 +193,7 @@
             $("#token_address").val(details.address);
             $("#token_decimals").val(details.decimals);
             $(".token_attributes").show();
+            $("#token_address").trigger("change");
           }
         });
         $(".send_token").on("click", function() {
@@ -223,8 +235,16 @@
       } else {
         $("#recipient_count").text($(".valid_address").length);
         var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
-        $("#total_amount").text(magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length).div(magnitude).toString());
-        $(".send_token").show();
+        var baseAmount = magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length);
+        var userBalance = baseAmount.div(magnitude);
+        if(baseAmount.gt($("#token_balance").data("balance"))) {
+          $(".balance_error").html("Total of " + userBalance.toString() + " exceeds available balance." )
+          $(".balance_error").show();
+        } else {
+          $("#total_amount").text(userBalance.toString());
+          $(".send_token").show();
+          $(".balance_error").hide();
+        }
       }
     }, 100)
     </script>
@@ -370,6 +390,7 @@
       </g>
     </svg>
     <h2>Send tokens to multiple addresses in one shot!</h2><br />
+    <h4>Need some tokens to Fling? <a href="https://get.embiggen.me/">We're giving away MBGN!</a></h4>
   </header>
   <main>
     <section id="need-web3" hidden="true">
@@ -377,7 +398,8 @@
     </section>
     <section id="dapp">
       <article id="center">
-            <table>
+        <table>
+          <tr>
             <th>Token:</th>
             <td id="token_select">
               <select>
@@ -386,6 +408,9 @@
               </select>
             </td>
           </tr>
+          <th>Balance:</th>
+          <td id="token_balance">
+          </td>
           <tr class="custom_options">
             <th>Token Address:</th>
             <td><input type="text" id="token_address"></input></td>
@@ -412,12 +437,13 @@
           </tr>
         </table>
         <button class="send_token">Split <span id="total_amount">0</span> <span id="token_name">Token</span> among <span id="recipient_count">0</span> users!</button>
+        <span class="balance_error"></span>
         <span class="submit_result"></span>
       </article>
       <p id="sendNotice" hidden="true"></p>
     </section>
   </main>
-  <footer>&copy; <a href="https://openrelay.xyz/">Open Relay LLC</a> &mdash; <a href="./terms-of-use.html">Terms of Use</a></footer>
+  <footer>&copy; <a href="https://openrelay.xyz/">Open Relay LLC</a> &mdash; <a href="./terms-of-use.html">Terms of Use</a> &mdash; View on <a href="https://etherscan.io/address/0xcc16643aa020fc23011c209e7d3f1abf2240ead1#code">Etherscan</a></footer>
 </div>
 </body>
 </html>
