@@ -71,182 +71,189 @@
       // recalculateTotal();
     }
     $(document).ready(function(){
-      if(!window.web3) {
-        $("#dapp").hide()
-        $("#need-web3").show()
-        return;
-      }
-      window.web3 = new Web3(window.web3.currentProvider);
-      setInterval(function(){
-        window.web3.eth.getAccounts(function(err, accounts) {
-          if(err || accounts.length == 0) {
-            $("#dapp").hide()
-            $("#need-web3").show()
-          } else {
-            $("#dapp").show()
-            $("#need-web3").hide()
-          }
-        })
-      }, 100);
-      var multiSendAddress = "0xcc16643aa020fc23011c209e7d3f1abf2240ead1";
-      var token = web3.eth.contract([{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]);
-      var multiSendContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_token","type":"address"},{"name":"addresses","type":"address[]"},{"name":"amount","type":"uint256"}],"name":"multiSend","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"addresses","type":"address[]"}],"name":"multiSendEth","outputs":[],"payable":true,"stateMutability":"payable","type":"function"}]).at(multiSendAddress);
-      $(".custom_options").hide();
-      $(".send_token").hide();
-      $(".target_address").on("keydown", addressBoxChange);
-      $(".target_address").on("keyup", addressBoxChange);
-      $.ajax({url: "./tokens.json", dataType: "json"}).then(function(result){
-        var keys = Object.keys(result);
-        keys.sort();
-        for(var key of keys) {
-          $("#token_select select").append($('<option value="' + key +'">'+ key +'</option>'))
+      $(window).on("load", function(){
+        if(!window.web3) {
+          $("#dapp").hide()
+          $("#need-web3").show()
+          return;
         }
-        $("#token_select select").append($('<option value="_">Other...</option>'))
-        var allowanceInterval;
-        $("#token_select select").on("change", function(value) {
-          if(allowanceInterval) {
-            clearInterval(allowanceInterval);
-          }
-          var allowance_pending = false;
-          setInterval(function() {
-            web3.eth.getAccounts(function(err, accounts) {
-
-              if(accounts.length == 0) {
-                $("main").hide();
-              }
-              if($("#token_address").val()) {
-                token.at($("#token_address").val()).allowance(accounts[0], multiSendAddress, function(err, allowance) {
-                  if(allowance.gt(0)) {
-                    allowance_pending = false;
-                    $(".unapproved").hide();
-                    $(".allowance_loading").hide();
-                    $("#allowance_pending").hide();
-                    $(".approved").show()
-                  } else if (!allowance_pending) {
-                    $(".unapproved").show();
-                    $(".allowance_loading").hide();
-                    $(".approved").hide()
-                  }
-                });
-              }
-            });
-          }, 2000);
-          $("#set_allowance").off("click");
-          $("#set_allowance").on("click", function() {
-            allowance_pending = true;
-            $(".unapproved").hide();
-            $(".approved").hide();
-            $(".allowance_loading").show();
-            web3.eth.getAccounts(function(err, accounts) {
-              token.at($("#token_address").val()).approve(multiSendAddress, web3.toBigNumber(2).pow(256).sub(1), {from: accounts[0]}, function(err, tx) {
-                if(err) {
-                  $("#allowance_pending").html(err.message);
-                  $(".allowance_loading").hide();
-                  $(".unapproved").show();
-                } else {
-                  $("#allowance_pending").html('<a href="https://etherscan.io/tx/'+tx+'">View on EtherScan</a>')
-                }
-                $("#allowance_pending").show();
-              });
-            });
-          });
-          $("#token_address").on("change", function() {
-            if(addressRegex.exec($(this).val())) {
-              $(this).parent().removeClass("invalid_address")
-              $(".token_attributes").show();
-              web3.eth.getAccounts(function(err, accounts) {
-                token.at($("#token_address").val()).balanceOf(accounts[0], function(err, balance) {
-                  $("#token_balance").html(web3.toBigNumber(balance).div(web3.toBigNumber(10).pow($("#token_decimals").val())).toString());
-                  $("#token_balance").data("balance", web3.toBigNumber(balance));
-                });
-              });
+        window.web3 = new Web3(window.web3.currentProvider);
+        function checkAccounts(){
+          window.web3.eth.getAccounts(function(err, accounts) {
+            if(err || accounts.length == 0) {
+              $("#dapp").hide()
+              $("#need-web3").show()
             } else {
-              $(this).parent().addClass("invalid_address")
-              $(".token_attributes").hide();
+              $("#dapp").show()
+              $("#need-web3").hide()
             }
+            setTimeout(checkAccounts, 1000);
           });
-          $(".custom_options").hide();
-          $(".token_attributes").hide();
-          $(".custom_options input").val("");
-          $(".send_token").show();
-          var token_id = $(this).val();
-          if(token_id == "ETH") {
-            // Special case
-            $("#token_name").text("Ether");
-            $("#token_decimals").val(18);
-            web3.eth.getAccounts(function(err, accounts) {
-              web3.eth.getBalance(accounts[0], function(err, balance) {
-                $("#token_balance").html(web3.toBigNumber(balance).div(web3.toBigNumber(10).pow($("#token_decimals").val())).toString());
-              })
-            })
-          } else if (token_id == "_"){
-            $(".custom_options").show();
-            $("#token_decimals").val(18);
-            $("#token_name").text("Token");
-            $(".token_attributes").hide();
-          } else if (token_id == "not-selected") {
-            $(".send_token").hide();
-
-          } else {
-            $("#token_name").text(token_id);
-            var details = result[token_id];
-            $("#token_address").val(details.address);
-            $("#token_decimals").val(details.decimals);
-            $(".token_attributes").show();
-            $("#token_address").trigger("change");
-          }
-        });
-        $(".send_token").on("click", function() {
-          web3.eth.getAccounts(function(err, accounts) {
-            var addresses = [];
-            $(".valid_address input").each(function(){
-              addresses.push($(this).val());
-            })
-            var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
-            if($("#token_select select").val() == "ETH") {
-              var value = magnitude.mul($("#send_amount").val()).mul($(".valid_address").length);
-              multiSendContract.multiSendEth(addresses, {from: accounts[0], value: value}, function(err, tx) {
-                if(err) {
-                  $(".submit_result").html(err);
-                } else {
-                  $(".submit_result").html('See your transaction on <a href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
-                }
-              })
-            } else {
-              var value = magnitude.mul($("#send_amount").val());
-              multiSendContract.multiSend($("#token_address").val(), addresses, value, {from: accounts[0]}, function(err, tx) {
-                if(err) {
-                  $(".submit_result").html(err);
-                } else {
-                  $(".submit_result").html('See your transaction on <a href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
-                }
-              })
-            }
-          });
-        })
-        // $("#send_amount").on("change", recalculateTotal);
-      }).catch(function(err) {
-        console.log("err", err);
-      });
-    });
-    setInterval(function() {
-      if($(".invalid_address").length > 0 || $("#token_select select").val() == "not-selected" || $(".valid_address").length == 0 || ($("#token_address").val() && $(".approved:visible").length == 0) || isNaN($("#send_amount").val()) || $("#send_amount").val() <= 0 || $("#send_amount").val() == "") {
+        }
+        checkAccounts();
+        var multiSendAddress = "0xcc16643aa020fc23011c209e7d3f1abf2240ead1";
+        var token = web3.eth.contract([{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"_owner","type":"address"},{"name":"_spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_from","type":"address"},{"indexed":true,"name":"_to","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"_owner","type":"address"},{"indexed":true,"name":"_spender","type":"address"},{"indexed":false,"name":"_value","type":"uint256"}],"name":"Approval","type":"event"}]);
+        var multiSendContract = web3.eth.contract([{"constant":false,"inputs":[{"name":"_token","type":"address"},{"name":"addresses","type":"address[]"},{"name":"amount","type":"uint256"}],"name":"multiSend","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"addresses","type":"address[]"}],"name":"multiSendEth","outputs":[],"payable":true,"stateMutability":"payable","type":"function"}]).at(multiSendAddress);
+        $(".custom_options").hide();
         $(".send_token").hide();
-      } else {
-        $("#recipient_count").text($(".valid_address").length);
-        var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
-        var baseAmount = magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length);
-        var userBalance = baseAmount.div(magnitude);
-        if(baseAmount.gt($("#token_balance").data("balance"))) {
-          $(".balance_error").html("Total of " + userBalance.toString() + " exceeds available balance." )
-          $(".balance_error").show();
+        $(".target_address").on("keydown", addressBoxChange);
+        $(".target_address").on("keyup", addressBoxChange);
+        $.ajax({url: "./tokens.json", dataType: "json"}).then(function(result){
+          var keys = Object.keys(result);
+          keys.sort();
+          for(var key of keys) {
+            $("#token_select select").append($('<option value="' + key +'">'+ key +'</option>'))
+          }
+          $("#token_select select").append($('<option value="_">Other...</option>'))
+          var allowanceInterval;
+          $("#token_select select").on("change", function(value) {
+            if(allowanceInterval) {
+              clearInterval(allowanceInterval);
+            }
+            var allowance_pending = false;
+            function checkAllowance() {
+              web3.eth.getAccounts(function(err, accounts) {
+
+                if(accounts.length == 0) {
+                  $("main").hide();
+                }
+                if($("#token_address").val()) {
+                  token.at($("#token_address").val()).allowance(accounts[0], multiSendAddress, function(err, allowance) {
+                    if(allowance.gt(0)) {
+                      allowance_pending = false;
+                      $(".unapproved").hide();
+                      $(".allowance_loading").hide();
+                      $("#allowance_pending").hide();
+                      $(".approved").show()
+                    } else if (!allowance_pending) {
+                      $(".unapproved").show();
+                      $(".allowance_loading").hide();
+                      $(".approved").hide()
+                    }
+                  });
+                }
+                setTimeout(checkAllowance, 2000);
+              });
+            }
+            checkAllowance();
+            $("#set_allowance").off("click");
+            $("#set_allowance").on("click", function() {
+              allowance_pending = true;
+              $(".unapproved").hide();
+              $(".approved").hide();
+              $(".allowance_loading").show();
+              web3.eth.getAccounts(function(err, accounts) {
+                token.at($("#token_address").val()).approve(multiSendAddress, web3.toBigNumber(2).pow(256).sub(1), {from: accounts[0]}, function(err, tx) {
+                  if(err) {
+                    $("#allowance_pending").html(err.message);
+                    $(".allowance_loading").hide();
+                    $(".unapproved").show();
+                  } else {
+                    $("#allowance_pending").html('<a href="https://etherscan.io/tx/'+tx+'">View on EtherScan</a>')
+                  }
+                  $("#allowance_pending").show();
+                });
+              });
+            });
+            $("#token_address").on("change", function() {
+              if(addressRegex.exec($(this).val())) {
+                $(this).parent().removeClass("invalid_address")
+                $(".token_attributes").show();
+                web3.eth.getAccounts(function(err, accounts) {
+                  token.at($("#token_address").val()).balanceOf(accounts[0], function(err, balance) {
+                    $("#token_balance").html(web3.toBigNumber(balance).div(web3.toBigNumber(10).pow($("#token_decimals").val())).toString());
+                    $("#token_balance").data("balance", web3.toBigNumber(balance));
+                  });
+                });
+              } else {
+                $(this).parent().addClass("invalid_address")
+                $(".token_attributes").hide();
+              }
+            });
+            $(".custom_options").hide();
+            $(".token_attributes").hide();
+            $(".custom_options input").val("");
+            $(".send_token").show();
+            var token_id = $(this).val();
+            if(token_id == "ETH") {
+              // Special case
+              $("#token_name").text("Ether");
+              $("#token_decimals").val(18);
+              web3.eth.getAccounts(function(err, accounts) {
+                web3.eth.getBalance(accounts[0], function(err, balance) {
+                  $("#token_balance").html(web3.toBigNumber(balance).div(web3.toBigNumber(10).pow($("#token_decimals").val())).toString());
+                })
+              })
+            } else if (token_id == "_"){
+              $(".custom_options").show();
+              $("#token_decimals").val(18);
+              $("#token_name").text("Token");
+              $(".token_attributes").hide();
+            } else if (token_id == "not-selected") {
+              $(".send_token").hide();
+
+            } else {
+              $("#token_name").text(token_id);
+              var details = result[token_id];
+              $("#token_address").val(details.address);
+              $("#token_decimals").val(details.decimals);
+              $(".token_attributes").show();
+              $("#token_address").trigger("change");
+            }
+          });
+          $(".send_token").on("click", function() {
+            web3.eth.getAccounts(function(err, accounts) {
+              var addresses = [];
+              $(".valid_address input").each(function(){
+                addresses.push($(this).val());
+              })
+              var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
+              if($("#token_select select").val() == "ETH") {
+                var value = magnitude.mul($("#send_amount").val()).mul($(".valid_address").length);
+                multiSendContract.multiSendEth(addresses, {from: accounts[0], value: value}, function(err, tx) {
+                  if(err) {
+                    $(".submit_result").html(err);
+                  } else {
+                    $(".submit_result").html('See your transaction on <a href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
+                  }
+                })
+              } else {
+                var value = magnitude.mul($("#send_amount").val());
+                multiSendContract.multiSend($("#token_address").val(), addresses, value, {from: accounts[0]}, function(err, tx) {
+                  if(err) {
+                    $(".submit_result").html(err);
+                  } else {
+                    $(".submit_result").html('See your transaction on <a href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
+                  }
+                })
+              }
+            });
+          })
+          // $("#send_amount").on("change", recalculateTotal);
+        }).catch(function(err) {
+          console.log("err", err);
+        });
+      });
+      setInterval(function() {
+        if($(".invalid_address").length > 0 || $("#token_select select").val() == "not-selected" || $(".valid_address").length == 0 || ($("#token_address").val() && $(".approved:visible").length == 0) || isNaN($("#send_amount").val()) || $("#send_amount").val() <= 0 || $("#send_amount").val() == "") {
+          $(".send_token").hide();
         } else {
-          $("#total_amount").text(userBalance.toString());
-          $(".send_token").show();
-          $(".balance_error").hide();
+          $("#recipient_count").text($(".valid_address").length);
+          var magnitude = web3.toBigNumber(10).pow($("#token_decimals").val() || 0);
+          var baseAmount = magnitude.mul($("#send_amount").val() || 0).mul($(".valid_address").length);
+          var userBalance = baseAmount.div(magnitude);
+          if(baseAmount.gt($("#token_balance").data("balance"))) {
+            $(".balance_error").html("Total of " + userBalance.toString() + " exceeds available balance." )
+            $(".balance_error").show();
+          } else {
+            $("#total_amount").text(userBalance.toString());
+            $(".send_token").show();
+            $(".balance_error").hide();
+          }
         }
-      }
-    }, 100)
+      }, 100)
+
+      });
     </script>
 </head>
 <body>
