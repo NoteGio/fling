@@ -101,7 +101,8 @@ h2 {
 }
 
 a {
-
+    color:#0056bb;
+    text-decoration:none;
 }
 
 i {
@@ -252,6 +253,10 @@ strong {
 
 }
 
+footer {
+    padding-top:10px;
+}
+
 table {
 
     display:table;
@@ -399,4 +404,22 @@ td {
 
 .invalid_address {
     background: linear-gradient(to right, #fefefe, #ffcc1a, #cc3615, #fefefe 65%);
+}
+
+#allowance_pending, .allowance_loading, .submit_result, .balance_error {
+
+
+    color:#cc3615;
+    font-size:20px;
+    font-weight:bolder;
+
+}
+
+#token_balance, #token_decimals {
+
+    display:inline-block;
+    align-items:center;
+    clear:all;
+    padding-top:25px;
+
 }
