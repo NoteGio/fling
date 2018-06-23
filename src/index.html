@@ -182,6 +182,7 @@
               web3.eth.getAccounts(function(err, accounts) {
                 web3.eth.getBalance(accounts[0], function(err, balance) {
                   $("#token_balance").html(web3.toBigNumber(balance).div(web3.toBigNumber(10).pow($("#token_decimals").val())).toString());
+                  $("#token_balance").data("balance", balance.toString());
                 })
               })
             } else if (token_id == "_"){
@@ -214,7 +215,7 @@
                   if(err) {
                     $(".submit_result").html(err);
                   } else {
-                    $(".submit_result").html('See your transaction on <a href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
+                    $(".submit_result").html('See your transaction on <a target="_blank" href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
                   }
                 })
               } else {
@@ -223,7 +224,7 @@
                   if(err) {
                     $(".submit_result").html(err);
                   } else {
-                    $(".submit_result").html('See your transaction on <a href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
+                    $(".submit_result").html('See your transaction on <a target="_blank" href="https://etherscan.io/tx/'+ tx + '">Etherscan</a>');
                   }
                 })
               }
